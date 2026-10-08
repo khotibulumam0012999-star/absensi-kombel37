@@ -6,274 +6,155 @@
   <title>Portal Absensi</title>
   <meta name="description" content="Portal Absensi & Klaim Sertifikat." />
   
-  <!-- Google Fonts: Poppins & Inter untuk kesan modern dan akademis -->
+  <!-- Hanya load 1 font untuk mempercepat loading -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Poppins:wght@600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
   
   <style>
     :root {
-      --primary: #2563eb;   /* Biru cerah */
-      --primary-dark: #1e40af; /* Biru tua */
-      --accent: #f59e0b;    /* Kuning/Emas */
-      --bg-light: #f8fafc;  /* Putih kebiruan */
+      --primary: #2563eb;
+      --primary-dark: #1e40af;
+      --bg-light: #f8fafc;
       --text-dark: #0f172a;
       --text-muted: #64748b;
       --white: #ffffff;
-      --radius: 16px;
-      --shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.05);
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; }
     
     html, body {
       height: 100%;
-      font-family: 'Inter', sans-serif;
+      font-family: 'Inter', system-ui, -apple-system, sans-serif; /* Fallback ke font sistem agar lebih cepat */
       background: var(--bg-light);
       color: var(--text-dark);
-      overflow: hidden; /* Mencegah scroll ganda */
+      overflow: hidden;
     }
 
-    /* --- NAVBAR --- */
+    /* --- NAVBAR (Disederhanakan untuk performa) --- */
     nav {
       position: fixed;
       top: 0;
       width: 100%;
-      height: 64px;
-      background: rgba(255, 255, 255, 0.85);
-      backdrop-filter: blur(10px);
-      -webkit-backdrop-filter: blur(10px);
+      height: 60px;
+      background: var(--white); /* Hilangkan blur agar lebih ringan */
       border-bottom: 1px solid #e2e8f0;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 0 24px;
+      padding: 0 20px;
       z-index: 100;
     }
 
-    .nav-brand {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      text-decoration: none;
-    }
+    .nav-brand { display: flex; align-items: center; gap: 10px; }
 
     .logo-circle {
-      width: 38px;
-      height: 38px;
-      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
-      border-radius: 10px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      box-shadow: 0 4px 6px -1px rgba(37, 99, 235, 0.3);
+      width: 36px; height: 36px;
+      background: var(--primary);
+      border-radius: 8px;
+      display: flex; align-items: center; justify-content: center;
     }
 
-    .nav-title {
-      font-family: 'Poppins', sans-serif;
-      font-weight: 700;
-      font-size: 18px;
-      color: var(--text-dark);
-      line-height: 1.2;
-    }
-
-    .nav-subtitle {
-      font-size: 12px;
-      color: var(--text-muted);
-      font-weight: 500;
-    }
+    .nav-title { font-weight: 700; font-size: 16px; }
+    .nav-subtitle { font-size: 11px; color: var(--text-muted); font-weight: 500; }
 
     .nav-badge {
-      padding: 6px 12px;
-      background: #ecfdf5;
-      color: #059669;
+      padding: 5px 10px;
+      background: #ecfdf5; color: #059669;
       border-radius: 20px;
-      font-size: 12px;
-      font-weight: 600;
-      display: flex;
-      align-items: center;
-      gap: 6px;
+      font-size: 11px; font-weight: 600;
+      display: flex; align-items: center; gap: 6px;
     }
 
     .dot {
-      width: 8px; height: 8px;
-      background: #10b981;
-      border-radius: 50%;
-      animation: pulse 2s infinite;
-    }
-
-    @keyframes pulse {
-      0% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.4); }
-      70% { box-shadow: 0 0 0 6px rgba(16, 185, 129, 0); }
-      100% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
+      width: 7px; height: 7px;
+      background: #10b981; border-radius: 50%;
     }
 
     /* --- LOADING SCREEN --- */
     #loader {
       position: fixed;
-      inset: 64px 0 0 0;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      gap: 24px;
+      inset: 60px 0 0 0;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      gap: 16px;
       background: var(--bg-light);
       z-index: 50;
-      transition: opacity 0.5s ease;
     }
 
     .loader-icon {
-      width: 60px;
-      height: 60px;
+      width: 40px; height: 40px;
       border: 4px solid #e2e8f0;
       border-top-color: var(--primary);
-      border-right-color: var(--accent);
       border-radius: 50%;
-      animation: spin 1s linear infinite;
+      animation: spin 0.8s linear infinite;
     }
 
     @keyframes spin { to { transform: rotate(360deg); } }
 
-    .loader-text {
-      font-family: 'Poppins', sans-serif;
-      font-weight: 600;
-      color: var(--text-dark);
-      letter-spacing: 0.5px;
-    }
-
-    .loader-subtext {
-      font-size: 14px;
-      color: var(--text-muted);
-    }
+    .loader-text { font-weight: 600; font-size: 14px; }
 
     /* --- IFRAME WRAPPER --- */
     #frame-wrapper {
       position: fixed;
-      top: 64px;
-      left: 0;
-      width: 100%;
-      height: calc(100% - 64px);
+      top: 60px; left: 0;
+      width: 100%; height: calc(100% - 60px);
       background: var(--white);
     }
 
     iframe#app {
-      width: 100%;
-      height: 100%;
-      border: 0;
-      display: block;
+      width: 100%; height: 100%;
+      border: 0; display: block;
     }
 
-    /* --- FALLBACK UI (Jika iframe diblokir Google) --- */
+    /* --- FALLBACK UI --- */
     #fallback {
-      position: fixed;
-      inset: 64px 0 0 0;
+      position: fixed; inset: 60px 0 0 0;
       display: none;
       flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      padding: 24px;
-      text-align: center;
-      background: linear-gradient(180deg, #f8fafc 0%, #eff6ff 100%);
-      overflow-y: auto;
+      align-items: center; justify-content: center;
+      padding: 24px; text-align: center;
+      background: var(--bg-light);
     }
 
     .fallback-card {
       background: var(--white);
-      padding: 48px 40px;
-      border-radius: 24px;
-      box-shadow: var(--shadow);
-      max-width: 520px;
-      width: 100%;
-      border-top: 6px solid var(--primary);
-      position: relative;
-      animation: slideUp 0.6s cubic-bezier(0.16, 1, 0.3, 1);
-    }
-
-    @keyframes slideUp {
-      from { transform: translateY(30px); opacity: 0; }
-      to { transform: translateY(0); opacity: 1; }
+      padding: 40px 30px;
+      border-radius: 16px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+      max-width: 420px; width: 100%;
+      border-top: 5px solid var(--primary);
     }
 
     .fallback-icon {
-      width: 80px;
-      height: 80px;
-      background: #eff6ff;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin: 0 auto 24px auto;
+      width: 60px; height: 60px;
+      background: #eff6ff; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      margin: 0 auto 20px auto;
     }
 
-    .fallback-card h2 {
-      font-family: 'Poppins', sans-serif;
-      font-size: 24px;
-      font-weight: 700;
-      color: var(--text-dark);
-      margin-bottom: 12px;
-    }
-
-    .fallback-card p {
-      font-size: 15px;
-      line-height: 1.6;
-      color: var(--text-muted);
-      margin-bottom: 32px;
-    }
+    .fallback-card h2 { font-size: 20px; font-weight: 700; margin-bottom: 10px; }
+    .fallback-card p { font-size: 14px; line-height: 1.5; color: var(--text-muted); margin-bottom: 24px; }
 
     .btn-primary {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 10px;
-      width: 100%;
-      padding: 16px 24px;
-      background: var(--primary);
-      color: var(--white);
-      border-radius: 12px;
-      text-decoration: none;
-      font-weight: 600;
-      font-size: 16px;
-      font-family: 'Inter', sans-serif;
-      transition: all 0.2s ease;
-      box-shadow: 0 4px 14px rgba(37, 99, 235, 0.3);
+      display: flex; align-items: center; justify-content: center; gap: 8px;
+      width: 100%; padding: 14px;
+      background: var(--primary); color: var(--white);
+      border-radius: 10px; text-decoration: none;
+      font-weight: 600; font-size: 15px;
     }
+    .btn-primary:hover { background: var(--primary-dark); }
 
-    .btn-primary:hover {
-      background: var(--primary-dark);
-      transform: translateY(-2px);
-      box-shadow: 0 6px 20px rgba(37, 99, 235, 0.4);
-    }
-
-    .btn-primary:active {
-      transform: translateY(0);
-    }
-
-    .security-badge {
-      margin-top: 24px;
-      font-size: 12px;
-      color: var(--text-muted);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 6px;
-    }
-
-    /* Responsive untuk mobile */
     @media (max-width: 640px) {
-      nav { padding: 0 16px; }
       .nav-subtitle { display: none; }
-      .fallback-card { padding: 32px 24px; }
     }
   </style>
 </head>
 <body>
 
-  <!-- Navbar Edukatif -->
   <nav>
     <div class="nav-brand">
       <div class="logo-circle">
-        <!-- Ion: Graduation Cap -->
-        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
           <path d="M22 10v6M2 10l10-5 10 5-10 5z"/>
           <path d="M6 12v5c3 3 9 3 12 0v-5"/>
         </svg>
@@ -290,16 +171,11 @@
     </div>
   </nav>
 
-  <!-- Loading Screen -->
   <div id="loader">
     <div class="loader-icon"></div>
-    <div>
-      <div class="loader-text">Memuat Konten Edukasi...</div>
-      <div class="loader-subtext" style="text-align: center; margin-top: 8px;">Mohon tunggu sebentar</div>
-    </div>
+    <div class="loader-text">Memuat Portal...</div>
   </div>
 
-  <!-- Iframe Wrapper -->
   <div id="frame-wrapper">
     <iframe
       id="app"
@@ -312,39 +188,20 @@
     ></iframe>
   </div>
 
-  <!-- Fallback UI (Desain Portal Edukasi) -->
   <div id="fallback" role="alert">
     <div class="fallback-card">
       <div class="fallback-icon">
-        <!-- Ikon Sertifikat/File PDF -->
-        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
           <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
           <polyline points="14 2 14 8 20 8"/>
-          <path d="M9 15h6"/>
-          <path d="M9 11h6"/>
+          <path d="M9 15h6"/><path d="M9 11h6"/>
         </svg>
       </div>
-      
       <h2>Validasi & Unduh Sertifikat</h2>
-      <p>
-        Demi keamanan dan kelancaran proses pengunduhan berkas PDF, sistem akan membuka halaman sertifikat pada tab baru. Silakan klik tombol di bawah ini untuk mengakses sertifikat Anda.
-      </p>
-      
+      <p>Demi keamanan dan kelancaran proses pengunduhan berkas PDF, sistem akan membuka halaman sertifikat pada tab baru.</p>
       <a id="fallback-link" href="https://script.google.com/macros/s/AKfycbxm6M6zKgfs-kVv8F2XpVZcHnL1VJ3nazRiwTar4z0FTLlPZIyeT-AVr0zk27PJNohTpg/exec" target="_blank" rel="noopener noreferrer" class="btn-primary">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
-          <polyline points="7 10 12 15 17 10"/>
-          <line x1="12" y1="15" x2="12" y2="3"/>
-        </svg>
         Buka & Download Sertifikat
       </a>
-
-      <div class="security-badge">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
-        </svg>
-        Terenkripsi & Aman
-      </div>
     </div>
   </div>
 
@@ -354,17 +211,14 @@
       const loader = document.getElementById('loader');
       const frame = document.getElementById('app');
       const fallback = document.getElementById('fallback');
-
       let loaded = false;
 
-      // Sembunyikan loader saat iframe selesai dimuat
       frame.addEventListener('load', function () {
         loaded = true;
-        loader.style.opacity = '0';
-        setTimeout(() => { loader.style.display = 'none'; }, 500);
+        loader.style.display = 'none';
       });
 
-      // Jika setelah 8 detik iframe belum termuat (kemungkinan diblokir Google), tampilkan Fallback
+      // Timeout 8 detik
       setTimeout(function () {
         if (!loaded) {
           loader.style.display = 'none';
@@ -372,13 +226,11 @@
         }
       }, 8000);
 
-      // Tangkap error jika iframe gagal dieksekusi
       frame.addEventListener('error', function () {
         loader.style.display = 'none';
         fallback.style.display = 'flex';
       });
 
-      // Pastikan link fallback selalu mengarah ke URL yang benar
       document.getElementById('fallback-link').setAttribute('href', GAS_URL);
     })();
   </script>
